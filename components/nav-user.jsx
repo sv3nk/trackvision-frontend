@@ -75,7 +75,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
-                Upgrade to Pro
+                AI Analytics
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

@@ -3,15 +3,16 @@
 import * as React from "react"
 import {
   BookOpen,
-  Bot,
   Frame,
   LifeBuoy,
   Map,
   PieChart,
   Send,
   Settings2,
-  SquareTerminal,
   Infinity,
+  Fingerprint,
+  TrainFront,
+  ChartArea
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -30,23 +31,23 @@ import {
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Rey Cycle",
+    email: "info@r-cycle.org",
+    avatar: "/avatars/userPic.jpg",
   },
   navMain: [
     {
-      title: "Playground",
+      title: "Digital Passport",
       url: "#",
-      icon: SquareTerminal,
+      icon: Fingerprint,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Search",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Portfolio",
           url: "#",
         },
         {
@@ -56,9 +57,9 @@ const data = {
       ],
     },
     {
-      title: "Models",
+      title: "Track & Trace",
       url: "#",
-      icon: Bot,
+      icon: TrainFront,
       items: [
         {
           title: "Genesis",
@@ -75,9 +76,9 @@ const data = {
       ],
     },
     {
-      title: "Documentation",
+      title: "Analytics",
       url: "#",
-      icon: BookOpen,
+      icon: ChartArea,
       items: [
         {
           title: "Introduction",
@@ -124,12 +125,12 @@ const data = {
   navSecondary: [
     {
       title: "Support",
-      url: "#",
+      url: "mailto:brian.moll@r-cycle.org",
       icon: LifeBuoy,
     },
     {
-      title: "Feedback",
-      url: "#",
+      title: "Contact",
+      url: "https://www.r-cycle.org/kontakt/",
       icon: Send,
     },
   ],
