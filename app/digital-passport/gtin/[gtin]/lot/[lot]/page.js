@@ -20,6 +20,7 @@ export default async function Page({ params }) {
     const primaryImage = 'https://rcycledemo.trackvision.ai/assets/' + mainElement.primaryImage;
     let lotOverviewArray = [];
     let productionDetailsArray = [];
+    let boxesArray = [];
     //const ingredientList = await getIngredientsList(gtin, lot);
     //const materialOriginList = await getMaterialOriginList(gtin, lot);
     //const componentDetailsList = await getComponentDetailsList(gtin, lot);
@@ -27,25 +28,46 @@ export default async function Page({ params }) {
     //const recyclabilityList = await getRecyclabilityList(gtin, lot);
     //const recommendedUseList = await getRecommendedUseList(gtin, lot);
 
+
+    // Order is missing, currently the order that is provided within each sub-category is not being used to construct the array
     for (let key in mainElement.lotOverview) {
-        if (mainElement.lotOverview[key] != null) {
-            lotOverviewArray.push({
-                property: key,
-                value: mainElement.lotOverview[key]
-            })
-        }
+        lotOverviewArray.push({
+            property: mainElement.lotOverview[key].displayName,
+            value: mainElement.lotOverview[key].value,
+            order: mainElement.lotOverview[key].order
+        })
     }
+
+    lotOverviewArray.sort((a, b) => a.order - b.order)
 
 
     // This transformation from an object to an array is necessary, as the table expects an array of objects
     for (let key in mainElement.productionDetails) {
-        if (mainElement.productionDetails[key] != null) {
-            productionDetailsArray.push({
-                property: key,
-                value: mainElement.productionDetails[key]
+        productionDetailsArray.push({
+            property: mainElement.productionDetails[key].displayName,
+            value: mainElement.productionDetails[key].value,
+            order: mainElement.productionDetails[key].order
+        })
+    }
+
+    for (let key in mainElement) {
+        if (key != 'id' && key != 'primaryImage' && key != 'share') {
+            let rowArray = []
+            for (let keyx in mainElement[key]) {
+                rowArray.push({
+                    property: mainElement[key][keyx].displayName,
+                    value: mainElement[key][keyx].value,
+                    order: mainElement[key][keyx].order
+                })
+            }
+            boxesArray.push({
+                boxName: key,
+                rowArray: rowArray
             })
         }
     }
+
+    productionDetailsArray.sort((a, b) => a.order - b.order)
 
     return (
         <div className="flex flex-col justify-center gap-4">
@@ -87,11 +109,23 @@ export default async function Page({ params }) {
                     <CarouselNext className=" hidden md:inline-flex" />
                 </Carousel>
             </div>
-            <div className="rounded-xl p-2 lg:p-6 shadow-sm">
-                <DataTableSimple columns={simpleTableColumns} data={lotOverviewArray} />
-            </div>
-            <div className="rounded-xl p-2 lg:p-6 shadow-sm">
-                <DataTableSimple columns={simpleTableColumns} data={productionDetailsArray} />
+            <div className="flex flex-col justify-center gap-4">
+                {boxesArray.length ? (
+                    boxesArray.map(box => (
+                        <div key={box.boxName}>
+                            {box.rowArray.length ? (
+                                <div key={box.boxName} className="rounded-xl p-2 lg:p-6 shadow-sm">
+                                    {box.boxName}
+                                    <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
+                                </div>
+                            ) : (
+                                null
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <div>no data</div>
+                )}
             </div>
         </div>
     )
