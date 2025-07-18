@@ -22,7 +22,12 @@ export const simpleTableColumns = [
                 uom_desc = row.original.uom_desc;
             }
 
-            return <div className="text-right font-medium">{value} {uom_desc}</div>
+            //return <div className="text-right font-medium">{value} {uom_desc} {desc}</div>
+            return (
+                <div className="text-right font-medium">
+                    {value} {uom_desc}{desc}
+                </div>
+            )
         },
     }
 ]
