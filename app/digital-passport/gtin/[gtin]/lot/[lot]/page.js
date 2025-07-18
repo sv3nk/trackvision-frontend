@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
 import { simpleTableColumns } from "@/components/ui/data-table-simple/columns";
+import { camelCaseToTitleCase } from "@/lib/utils";
 
 
 export default async function Page({ params }) {
@@ -28,46 +29,34 @@ export default async function Page({ params }) {
     //const recyclabilityList = await getRecyclabilityList(gtin, lot);
     //const recommendedUseList = await getRecommendedUseList(gtin, lot);
 
-
-    // Order is missing, currently the order that is provided within each sub-category is not being used to construct the array
-    for (let key in mainElement.lotOverview) {
-        lotOverviewArray.push({
-            property: mainElement.lotOverview[key].displayName,
-            value: mainElement.lotOverview[key].value,
-            order: mainElement.lotOverview[key].order
-        })
-    }
-
-    lotOverviewArray.sort((a, b) => a.order - b.order)
-
-
-    // This transformation from an object to an array is necessary, as the table expects an array of objects
-    for (let key in mainElement.productionDetails) {
-        productionDetailsArray.push({
-            property: mainElement.productionDetails[key].displayName,
-            value: mainElement.productionDetails[key].value,
-            order: mainElement.productionDetails[key].order
-        })
-    }
-
+    // Create array of data to be shown by in tables.
+    // Necessary, because data is provided in JSON objects but tables require an array
     for (let key in mainElement) {
         if (key != 'id' && key != 'primaryImage' && key != 'share') {
             let rowArray = []
-            for (let keyx in mainElement[key]) {
+            for (let keyx in mainElement[key]) { 
                 rowArray.push({
                     property: mainElement[key][keyx].displayName,
                     value: mainElement[key][keyx].value,
-                    order: mainElement[key][keyx].order
+                    order: mainElement[key][keyx].order,
+                    uom_desc: mainElement[key][keyx].uom_desc,
+                    desc: mainElement[key][keyx].desc,
+                    long_desc: mainElement[key][keyx].long_desc
                 })
             }
-            boxesArray.push({
-                boxName: key,
-                rowArray: rowArray
-            })
+            if (rowArray.length > 0) {
+                boxesArray.push({
+                    boxName: camelCaseToTitleCase(key),
+                    rowArray: rowArray
+                })
+            }
+
         }
     }
 
     productionDetailsArray.sort((a, b) => a.order - b.order)
+
+    console.log(boxesArray)
 
     return (
         <div className="flex flex-col justify-center gap-4">
@@ -109,24 +98,20 @@ export default async function Page({ params }) {
                     <CarouselNext className=" hidden md:inline-flex" />
                 </Carousel>
             </div>
-            <div className="flex flex-col justify-center gap-4">
-                {boxesArray.length ? (
-                    boxesArray.map(box => (
-                        <div key={box.boxName}>
-                            {box.rowArray.length ? (
-                                <div key={box.boxName} className="rounded-xl p-2 lg:p-6 shadow-sm">
+            {boxesArray.length ? (
+                boxesArray.map(box => (
+                    <div key={box.boxName} className="flex flex-col justify-center rounded-xl shadow-sm p-2 lg:p-4">
+                            <div key={box.boxName} className="rounded-xl">
+                                <div className="pb-2">
                                     {box.boxName}
-                                    <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
                                 </div>
-                            ) : (
-                                null
-                            )}
-                        </div>
-                    ))
-                ) : (
-                    <div>no data</div>
-                )}
-            </div>
+                                <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
+                            </div>
+                    </div>
+                ))
+            ) : (
+                <div>no data</div>
+            )}
         </div>
     )
 }
