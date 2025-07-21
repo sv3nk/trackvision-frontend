@@ -48,21 +48,19 @@ export default function RootLayout({ children }) {
                   <BreadcrumbList>
                     <BreadcrumbItem className="hidden md:block">
                       <BreadcrumbLink href="#">
-                        Building Your Application
+                        Data
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator className="hidden md:block" />
                     <BreadcrumbItem>
-                      <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                      <BreadcrumbPage>Digital Passport</BreadcrumbPage>
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
               </div>
             </header>
-            <div className="p-4 pt-0">
-                <div className="flex justify-center">
-                    {children}
-                </div>
+            <div className="p-4 pt-0 flex justify-center">
+                {children}
             </div>
           </SidebarInset>
         </SidebarProvider>

@@ -11,6 +11,8 @@ import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
 import { simpleTableColumns } from "@/components/ui/data-table-simple/columns";
 import { camelCaseToTitleCase } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
 export default async function Page({ params }) {
@@ -19,7 +21,6 @@ export default async function Page({ params }) {
     const calculationData = await getCalculationOuput(gtin, lot);
     const mainElement = calculationData[calculationData.length - 1];
     const primaryImage = 'https://rcycledemo.trackvision.ai/assets/' + mainElement.primaryImage;
-    let productionDetailsArray = [];
     let boxesArray = [];
     //const ingredientList = await getIngredientsList(gtin, lot);
     //const materialOriginList = await getMaterialOriginList(gtin, lot);
@@ -56,60 +57,75 @@ export default async function Page({ params }) {
         }
     }
 
-    productionDetailsArray.sort((a, b) => a.order - b.order)
-
     return (
-        <div className="flex flex-col gap-4 w-full md:max-w-6xl">
-            <div className="flex justify-center rounded-xl p-2 lg:p-6 shadow-sm">
-                <Carousel className="w-full max-w-xs rounded-xl">
-                    <CarouselContent>
-                        <CarouselItem>
-                            <Card className="py-0 shadow-none">
-                                <CardContent className="aspect-square items-center justify-center p-6 relative">
-                                    <Image
-                                        src={primaryImage}
-                                        fill={true}
-                                        priority={false}
-                                        loading="lazy"
-                                        placeholder="blur"
-                                        blurDataURL="/placeholder.png"
-                                        alt="Picture of the author"
-                                        className="bg-gray-500 rounded-xl object-cover"
-                                    />
-                                </CardContent>
-                            </Card>
-                        </CarouselItem>
-                        <CarouselItem>
-                            <Card className="py-0 shadow-none">
-                                <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">Image 2</span>
-                                </CardContent>
-                            </Card>
-                        </CarouselItem>
-                        <CarouselItem>
-                            <Card className="py-0 shadow-none">
-                                <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">Image 3</span>
-                                </CardContent>
-                            </Card>
-                        </CarouselItem>
-                    </CarouselContent>
-                    <CarouselPrevious className=" hidden md:inline-flex" />
-                    <CarouselNext className=" hidden md:inline-flex" />
-                </Carousel>
-            </div>
-            {boxesArray.length ? (
-                boxesArray.map(box => (
-                    <div key={box.boxName} className="rounded-xl shadow-sm p-4 pt-2">
-                        <div className="pb-2 font-medium">
-                            {box.boxName}
-                        </div>
-                        <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
+        <div className="flex flex-col w-full md:max-w-6xl">
+            <Tabs defaultValue="data" className="flex flex-col gap-3">
+                <div className="flex justify-center md:justify-normal">
+                    <TabsList className="shadow-sm">
+                        <TabsTrigger className="px-4" value="data">Data</TabsTrigger>
+                        <TabsTrigger className="px-4" value="tree">Tree</TabsTrigger>
+                        <TabsTrigger className="px-4" value="documents">Documents</TabsTrigger>
+                    </TabsList>
+                </div>
+                <TabsContent value="data" className="flex flex-col gap-4">
+                    <div className="flex justify-center rounded-xl p-2 lg:p-6 shadow-sm">
+                        <Carousel className="w-full max-w-xs rounded-xl">
+                            <CarouselContent>
+                                <CarouselItem>
+                                    <Card className="py-0 shadow-none">
+                                        <CardContent className="aspect-square items-center justify-center p-6 relative">
+                                            <Image
+                                                src={primaryImage}
+                                                fill={true}
+                                                priority={false}
+                                                loading="lazy"
+                                                placeholder="blur"
+                                                blurDataURL="/placeholder.png"
+                                                alt="Picture of the author"
+                                                className="bg-gray-500 rounded-xl object-cover"
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                </CarouselItem>
+                                <CarouselItem>
+                                    <Card className="py-0 shadow-none">
+                                        <CardContent className="flex aspect-square items-center justify-center p-6">
+                                            <span className="text-4xl font-semibold">Image 2</span>
+                                        </CardContent>
+                                    </Card>
+                                </CarouselItem>
+                                <CarouselItem>
+                                    <Card className="py-0 shadow-none">
+                                        <CardContent className="flex aspect-square items-center justify-center p-6">
+                                            <span className="text-4xl font-semibold">Image 3</span>
+                                        </CardContent>
+                                    </Card>
+                                </CarouselItem>
+                            </CarouselContent>
+                            <CarouselPrevious className=" hidden md:inline-flex" />
+                            <CarouselNext className=" hidden md:inline-flex" />
+                        </Carousel>
                     </div>
-                ))
-            ) : (
-                <div>no data</div>
-            )}
+                    {boxesArray.length ? (
+                        boxesArray.map(box => (
+                            <div key={box.boxName} className="rounded-xl shadow-sm p-4 pt-2">
+                                <div className="pb-2 font-medium">
+                                    {box.boxName}
+                                </div>
+                                <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
+                            </div>
+                        ))
+                    ) : (
+                        <div>no data</div>
+                    )}
+                </TabsContent>
+                <TabsContent value="tree" className="flex flex-col gap-4">
+                    Tree
+                </TabsContent>
+                <TabsContent value="documents" className="flex flex-col gap-4">
+                    Documents
+                </TabsContent>
+            </Tabs>
         </div>
     )
 }
