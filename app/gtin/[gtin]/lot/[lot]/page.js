@@ -19,7 +19,6 @@ export default async function Page({ params }) {
     const calculationData = await getCalculationOuput(gtin, lot);
     const mainElement = calculationData[calculationData.length - 1];
     const primaryImage = 'https://rcycledemo.trackvision.ai/assets/' + mainElement.primaryImage;
-    let lotOverviewArray = [];
     let productionDetailsArray = [];
     let boxesArray = [];
     //const ingredientList = await getIngredientsList(gtin, lot);
@@ -44,7 +43,10 @@ export default async function Page({ params }) {
                     long_desc: mainElement[key][keyx].long_desc
                 })
             }
+
             if (rowArray.length > 0) {
+                // Sort the rows depending on their order attribute
+                rowArray.sort((a, b) => a.order - b.order)
                 boxesArray.push({
                     boxName: camelCaseToTitleCase(key),
                     rowArray: rowArray
