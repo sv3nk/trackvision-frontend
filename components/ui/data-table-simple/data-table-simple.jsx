@@ -30,6 +30,7 @@ export function DataTableSimple({ columns, data }) {
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map(row => (
                             <TableRow
+                                className="flex flex-row md:justify-between"
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                             >

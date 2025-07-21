@@ -59,8 +59,10 @@ export default function RootLayout({ children }) {
                 </Breadcrumb>
               </div>
             </header>
-            <div className="flex flex-1 flex-col p-4 pt-0">
-              {children}
+            <div className="p-4 pt-0">
+                <div className="flex justify-center">
+                    {children}
+                </div>
             </div>
           </SidebarInset>
         </SidebarProvider>
