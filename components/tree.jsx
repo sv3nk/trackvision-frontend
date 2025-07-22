@@ -19,6 +19,11 @@ import {
     ArrowRightFromLine
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { TreeNode } from './ui/treeNode';
+
+const nodeTypes = {
+    treeNode: TreeNode,
+};
 
 
 const elk = new ELK();
@@ -46,8 +51,8 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
             sourcePosition: isHorizontal ? 'right' : 'bottom',
 
             // Hardcode a width and height for elk to use when layouting.
-            width: 150,
-            height: 50,
+            width: 200,
+            height: 200,
         })),
         edges: edges,
     };
@@ -102,6 +107,8 @@ function LayoutFlow({ initialNodes, initialEdges }) {
             onConnect={onConnect}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            nodeTypes={nodeTypes}
+            nodesDraggable={false}
             minZoom={0.1}
             fitView
             className="min-h-[500px] md:min-h-[700px]"
@@ -110,10 +117,10 @@ function LayoutFlow({ initialNodes, initialEdges }) {
                 <Tabs defaultValue="account">
                     <TabsList>
                         <TabsTrigger value="account" onClick={() => onLayout({ direction: 'DOWN' })}>
-                            <ArrowDownFromLine/>
+                            <ArrowDownFromLine />
                         </TabsTrigger>
                         <TabsTrigger value="password" onClick={() => onLayout({ direction: 'RIGHT' })}>
-                            <ArrowRightFromLine/>
+                            <ArrowRightFromLine />
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="account"></TabsContent>
@@ -130,22 +137,42 @@ export function Tree({ data }) {
 
     const initPosition = { x: 0, y: 0 };
     let initialEdges = [];
-    let initialNodes = data;
+    let initialNodes = [];
 
-    // add position and node content information to dataset
-    for (let node in initialNodes) {
-        initialNodes[node].position = initPosition;
-        initialNodes[node]['data'] = { label: initialNodes[node].lotOverview.detailedName.value };
+    for (let dataset in data) {
 
+        let node = {
+            id: data[dataset].id,
+            position: initPosition,
+            type: 'treeNode',
+            sourcePosition: 'right',
+            targetPosition: 'left',
+            data: {
+                detailedName: data[dataset].lotOverview.detailedName.value,
+                productName: data[dataset].lotOverview.product_name.value,
+                primaryImage: data[dataset].primaryImage,
+                share: data[dataset].share,
+                gtin: data[dataset].lotOverview.gtin.value,
+                lot: data[dataset].lotOverview.lot.value,
+                quantity: data[dataset].lotOverview.lotQuantity.value,
+                quantityUom: data[dataset].lotOverview.lotQuantity.uom_desc,
+                productionStep: data[dataset].productionDetails.productionStep.value,
+                eventTime: data[dataset].productionDetails.eventTime.value
+            }
+        }
+
+        initialNodes.push(node);
 
         var edge = {
-            id: 'e' + initialNodes[node].id + 'TO' + initialNodes[node].parent,
-            source: initialNodes[node].parent,
-            target: initialNodes[node].id,
+            id: 'e' + data[dataset].id + 'TO' + data[dataset].parent,
+            source: data[dataset].parent,
+            target: data[dataset].id,
             type: 'smoothstep'
         }
 
-        initialEdges.push(edge);
+        if (edge.source != edge.target) {
+            initialEdges.push(edge);
+        }
     }
 
     return (
