@@ -11,8 +11,8 @@ import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
 import { simpleTableColumns } from "@/components/ui/data-table-simple/columns";
 import { camelCaseToTitleCase } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tree } from "@/components/tree";
 
 
 export default async function Page({ params }) {
@@ -32,7 +32,7 @@ export default async function Page({ params }) {
     // Create array of data to be shown by in tables.
     // Necessary, because data is provided in JSON objects but tables require an array
     for (let key in mainElement) {
-        if (key != 'id' && key != 'primaryImage' && key != 'share') {
+        if (key != 'id' && key != 'primaryImage' && key != 'share' && key != 'parent') {
             let rowArray = []
             for (let keyx in mainElement[key]) {
                 rowArray.push({
@@ -119,8 +119,8 @@ export default async function Page({ params }) {
                         <div>no data</div>
                     )}
                 </TabsContent>
-                <TabsContent value="tree" className="flex flex-col gap-4">
-                    Tree
+                <TabsContent value="tree" className="">
+                    <Tree data={calculationData} />
                 </TabsContent>
                 <TabsContent value="documents" className="flex flex-col gap-4">
                     Documents
