@@ -15,9 +15,10 @@ import {
     useReactFlow,
 } from '@xyflow/react';
 import {
-  ArrowDownFromLine,
-  ArrowRightFromLine
+    ArrowDownFromLine,
+    ArrowRightFromLine
 } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
 const elk = new ELK();
@@ -103,22 +104,21 @@ function LayoutFlow({ initialNodes, initialEdges }) {
             onEdgesChange={onEdgesChange}
             minZoom={0.1}
             fitView
-            className="min-h-[500px] md:min-h-[600px]"
+            className="min-h-[500px] md:min-h-[700px]"
         >
             <Panel position="top-right">
-                <button
-                    className="text-sm bg-muted/50 p-1 shadow-sm mr-2"
-                    onClick={() => onLayout({ direction: 'DOWN' })}
-                >
-                    <ArrowDownFromLine size={18} />
-                </button>
-
-                <button
-                    className="text-sm bg-muted/50 p-1 shadow-sm"
-                    onClick={() => onLayout({ direction: 'RIGHT' })}
-                >
-                    <ArrowRightFromLine size={18} />
-                </button>
+                <Tabs defaultValue="account">
+                    <TabsList>
+                        <TabsTrigger value="account" onClick={() => onLayout({ direction: 'DOWN' })}>
+                            <ArrowDownFromLine/>
+                        </TabsTrigger>
+                        <TabsTrigger value="password" onClick={() => onLayout({ direction: 'RIGHT' })}>
+                            <ArrowRightFromLine/>
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="account"></TabsContent>
+                    <TabsContent value="password"></TabsContent>
+                </Tabs>
             </Panel>
             <Background />
             <Controls />
@@ -129,7 +129,7 @@ function LayoutFlow({ initialNodes, initialEdges }) {
 export function Tree({ data }) {
 
     const initPosition = { x: 0, y: 0 };
-    let initialEdges  = [];
+    let initialEdges = [];
     let initialNodes = data;
 
     // add position and node content information to dataset
@@ -145,12 +145,12 @@ export function Tree({ data }) {
             type: 'smoothstep'
         }
 
-        initialEdges .push(edge);
+        initialEdges.push(edge);
     }
 
     return (
-        <div className="min-h-[500px] md:min-h-[600px]">
-              <ReactFlowProvider>
+        <div className="min-h-[500px] md:min-h-[700px] rounded-xl shadow-sm">
+            <ReactFlowProvider>
                 <LayoutFlow initialNodes={initialNodes} initialEdges={initialEdges} />
             </ReactFlowProvider>
         </div>
