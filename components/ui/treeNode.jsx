@@ -2,18 +2,27 @@
 
 import { Handle, Position } from '@xyflow/react';
 import Image from 'next/image'
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
 
 export function TreeNode(data) {
 
     let imageSrc = data.data.primaryImage;
-    if(imageSrc == null) {
+    if (imageSrc == null) {
         imageSrc = '/placeholder.png'
     } else {
         imageSrc = 'https://rcycledemo.trackvision.ai/assets/' + data.data.primaryImage;
     }
 
     return (
-        <div className="flex flex-col grow shadow-sm rounded-md w-[200px] h-[200px] bg-gray-50 p-1">
+        <div className="flex flex-col grow rounded-md w-[320px] h-[260px] p-1">
             <Handle type="target" position={data.targetPosition} />
             <Handle type="source" position={data.sourcePosition} />
             <div className='flex flex-row shadow-sm rounded-sm bg-white'>
@@ -25,6 +34,7 @@ export function TreeNode(data) {
                         loading="lazy"
                         placeholder="blur"
                         blurDataURL="/placeholder.png"
+                        alt='Picture of component'
                         className="object-cover rounded-sm"
                     />
                 </div>
@@ -32,18 +42,29 @@ export function TreeNode(data) {
                     {data.data.productName}
                 </div>
             </div>
-            <div className='grid grid-cols-2 rounded-sm shadow-sm bg-white mt-1 text-xs py-1 px-2'>
-                <div className='flex flex-col gap-1 bg-amber-100'>
-                    <p>Name</p>
-                    <p>LGTIN</p>
-                    <p>Production Step</p>
-                    <p>Quantity</p>
-                    <p>Date</p>
-                </div>
-                <div className='flex flex-col bg-blue-200 text-right'>
-                    Values
+            <div className='bg-white p-1 mt-1 rounded-sm shadow-sm'>
+                <div className='grid grid-cols-3 border rounded-sm bg-white text-xs py-2 px-2 overflow-hidden'>
+                    <div className='flex flex-col col-span-1 gap-1'>
+                        <div className='pb-1 border-b'>Name</div>
+                        <div className='pb-1 border-b'>GTIN</div>
+                        <div className='pb-1 border-b'>Lot</div>
+                        <div className='pb-1 border-b'>Production Step</div>
+                        <div className='pb-1 border-b'>Quantity</div>
+                        <div className='pb-1 border-b'>Share</div>
+                        <div>Date</div>
+                    </div>
+                    <div className='flex flex-col col-span-2 gap-1 text-nowrap overflow-hidden'>
+                        <div className='pb-1 border-b'>{data.data.detailedName}</div>
+                        <div className='pb-1 border-b'>{data.data.gtin}</div>
+                        <div className='pb-1 border-b'>{data.data.lot}</div>
+                        <div className='pb-1 border-b'>{data.data.productionStep}</div>
+                        <div className='pb-1 border-b'>{data.data.quantity} {data.data.quantityUom}</div>
+                        <div className='pb-1 border-b'>{data.data.share}</div>
+                        <div>{data.data.eventTime}</div>
+                    </div>
                 </div>
             </div>
+
         </div>
     )
 }

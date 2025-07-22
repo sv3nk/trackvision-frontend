@@ -51,8 +51,8 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
             sourcePosition: isHorizontal ? 'right' : 'bottom',
 
             // Hardcode a width and height for elk to use when layouting.
-            width: 200,
-            height: 200,
+            width: 320,
+            height: 250,
         })),
         edges: edges,
     };
@@ -100,6 +100,8 @@ function LayoutFlow({ initialNodes, initialEdges }) {
         onLayout({ direction: 'DOWN', useInitialNodes: true });
     }, []);
 
+    const style={background: '#f7f9fb'}
+
     return (
         <ReactFlow
             nodes={nodes}
@@ -110,6 +112,7 @@ function LayoutFlow({ initialNodes, initialEdges }) {
             nodeTypes={nodeTypes}
             nodesDraggable={false}
             minZoom={0.1}
+            style={style}
             fitView
             className="min-h-[500px] md:min-h-[700px]"
         >
