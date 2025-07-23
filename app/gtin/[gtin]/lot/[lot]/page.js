@@ -6,6 +6,12 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
@@ -23,16 +29,18 @@ export default async function Page({ params }) {
     const mainElement = calculationData[calculationData.length - 1];
     let primaryImage = '/placeholder.png'
 
-    if(calculationData.length == 0) {
+    if (calculationData.length == 0) {
         notFound()
     }
 
-    if('primaryImage' in mainElement) {
-        if(mainElement.primaryImage != null) {
+    if ('primaryImage' in mainElement) {
+        if (mainElement.primaryImage != null) {
             primaryImage = 'https://rcycledemo.trackvision.ai/assets/' + mainElement.primaryImage;
         }
     }
     let boxesArray = [];
+    // This is only used for the accordion state, so that all boxes are open by default
+    let boxesNameArray = [];
     //const ingredientList = await getIngredientsList(gtin, lot);
     //const materialOriginList = await getMaterialOriginList(gtin, lot);
     //const componentDetailsList = await getComponentDetailsList(gtin, lot);
@@ -63,6 +71,7 @@ export default async function Page({ params }) {
                     boxName: camelCaseToTitleCase(key),
                     rowArray: rowArray
                 })
+                boxesNameArray.push(camelCaseToTitleCase(key))
             }
 
         }
@@ -117,7 +126,7 @@ export default async function Page({ params }) {
                             <CarouselNext className=" hidden md:inline-flex" />
                         </Carousel>
                     </div>
-                    {boxesArray.length ? (
+                    {/* {boxesArray.length ? (
                         boxesArray.map(box => (
                             <div key={box.boxName} className="rounded-xl shadow-sm p-4 pt-2">
                                 <div className="pb-2 font-medium">
@@ -128,7 +137,26 @@ export default async function Page({ params }) {
                         ))
                     ) : (
                         <div>no data</div>
-                    )}
+                    )} */}
+                    <Accordion type="multiple" collapsible="true" defaultValue={boxesNameArray}>
+                        {boxesArray.length ? (
+                            boxesArray.map(box => (
+                                <AccordionItem key={box.boxName} value={box.boxName} className="rounded-xl shadow-sm px-4 mb-4">
+                                    <AccordionTrigger className='font-medium text-base pt-2 pb-2'>{box.boxName}</AccordionTrigger>
+                                    <AccordionContent>
+                                        <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))
+                        ) : (
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger>Error</AccordionTrigger>
+                                <AccordionContent>
+                                    No calculation data available for this product.
+                                </AccordionContent>
+                            </AccordionItem>
+                        )}
+                    </Accordion>
                 </TabsContent>
                 <TabsContent value="tree" className="">
                     <Tree data={calculationData} />

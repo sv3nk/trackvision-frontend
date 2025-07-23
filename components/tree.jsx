@@ -114,7 +114,7 @@ function LayoutFlow({ initialNodes, initialEdges }) {
             minZoom={0.1}
             style={style}
             fitView
-            className="min-h-[500px] md:min-h-[700px]"
+            className="min-h-[500px] md:min-h-[700px] rounded-xl"
         >
             <Panel position="top-right">
                 <Tabs defaultValue="account">
