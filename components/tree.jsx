@@ -52,7 +52,7 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
 
             // Hardcode a width and height for elk to use when layouting.
             width: 320,
-            height: 250,
+            height: 230,
         })),
         edges: edges,
     };

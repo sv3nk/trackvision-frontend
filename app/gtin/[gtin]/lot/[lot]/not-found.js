@@ -1,4 +1,3 @@
-import { getCalculationOuput, getIngredientsList, getMaterialOriginList, getComponentDetailsList, getAdditiveList, getRecyclabilityList, getRecommendedUseList } from "@/lib/data";
 import {
     Carousel,
     CarouselContent,
@@ -8,66 +7,9 @@ import {
 } from "@/components/ui/carousel"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
-import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
-import { simpleTableColumns } from "@/components/ui/data-table-simple/columns";
-import { camelCaseToTitleCase } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Tree } from "@/components/tree";
-import { notFound } from "next/navigation";
 
-
-export default async function Page({ params }) {
-    const { gtin, lot } = await params;
-
-    const calculationData = await getCalculationOuput(gtin, lot);
-    const mainElement = calculationData[calculationData.length - 1];
-    let primaryImage = '/placeholder.png'
-
-    if(calculationData.length == 0) {
-        notFound()
-    }
-
-    if('primaryImage' in mainElement) {
-        if(mainElement.primaryImage != null) {
-            primaryImage = 'https://rcycledemo.trackvision.ai/assets/' + mainElement.primaryImage;
-        }
-    }
-    let boxesArray = [];
-    //const ingredientList = await getIngredientsList(gtin, lot);
-    //const materialOriginList = await getMaterialOriginList(gtin, lot);
-    //const componentDetailsList = await getComponentDetailsList(gtin, lot);
-    //const additiveList = await getAdditiveList(gtin, lot);
-    //const recyclabilityList = await getRecyclabilityList(gtin, lot);
-    //const recommendedUseList = await getRecommendedUseList(gtin, lot);
-
-    // Create array of data to be shown by in tables.
-    // Necessary, because data is provided in JSON objects but tables require an array
-    for (let key in mainElement) {
-        if (key != 'id' && key != 'primaryImage' && key != 'share' && key != 'parent') {
-            let rowArray = []
-            for (let keyx in mainElement[key]) {
-                rowArray.push({
-                    property: mainElement[key][keyx].displayName,
-                    value: mainElement[key][keyx].value,
-                    order: mainElement[key][keyx].order,
-                    uom_desc: mainElement[key][keyx].uom_desc,
-                    desc: mainElement[key][keyx].desc,
-                    long_desc: mainElement[key][keyx].long_desc
-                })
-            }
-
-            if (rowArray.length > 0) {
-                // Sort the rows depending on their order attribute
-                rowArray.sort((a, b) => a.order - b.order)
-                boxesArray.push({
-                    boxName: camelCaseToTitleCase(key),
-                    rowArray: rowArray
-                })
-            }
-
-        }
-    }
-
+export default function NotFound() {
     return (
         <div className="flex flex-col w-full md:max-w-6xl">
             <Tabs defaultValue="data" className="flex flex-col gap-3">
@@ -86,7 +28,7 @@ export default async function Page({ params }) {
                                     <Card className="py-0 shadow-none">
                                         <CardContent className="aspect-square items-center justify-center p-6 relative">
                                             <Image
-                                                src={primaryImage}
+                                                src={"/placeholder.png"}
                                                 fill={true}
                                                 priority={false}
                                                 loading="lazy"
@@ -117,24 +59,28 @@ export default async function Page({ params }) {
                             <CarouselNext className=" hidden md:inline-flex" />
                         </Carousel>
                     </div>
-                    {boxesArray.length ? (
-                        boxesArray.map(box => (
-                            <div key={box.boxName} className="rounded-xl shadow-sm p-4 pt-2">
-                                <div className="pb-2 font-medium">
-                                    {box.boxName}
-                                </div>
-                                <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
-                            </div>
-                        ))
-                    ) : (
-                        <div>no data</div>
-                    )}
+                    <div className="rounded-xl shadow-sm p-4 pt-2 bg-red-400">
+                        <div className="pb-2 font-medium">
+                            No data
+                        </div>
+                        Sorry, we cannot find data related to this product in our system.
+                    </div>
                 </TabsContent>
                 <TabsContent value="tree" className="">
-                    <Tree data={calculationData} />
+                    <div className="rounded-xl shadow-sm p-4 pt-2 bg-red-400">
+                        <div className="pb-2 font-medium">
+                            No data
+                        </div>
+                        Sorry, we cannot find data related to this product in our system.
+                    </div>
                 </TabsContent>
-                <TabsContent value="documents" className="flex flex-col gap-4">
-                    Documents
+                <TabsContent value="documents" className="">
+                    <div className="rounded-xl shadow-sm p-4 pt-2 bg-red-400">
+                        <div className="pb-2 font-medium">
+                            No data
+                        </div>
+                        Sorry, we cannot find data related to this product in our system.
+                    </div>
                 </TabsContent>
             </Tabs>
         </div>
