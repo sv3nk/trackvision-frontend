@@ -150,8 +150,9 @@ export function Tree({ data }) {
 
     for (let dataset in data) {
 
-        const share = parseFloat(data[dataset].share)
-        const shareRounded = Math.round(share * 10) / 10
+        const share = parseFloat(data[dataset].share) * 100
+        const shareRounded = Math.round(share*10)/10
+        //const shareRounded = Math.round(share * 100)
 
         let node = {
             id: data[dataset].id,
