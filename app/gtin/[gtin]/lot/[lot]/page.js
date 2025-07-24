@@ -44,7 +44,7 @@ export default async function Page({ params }) {
     let boxesNameArray = [];
 
     const ingredientList = await getIngredientsList(gtin, lot);
-    console.log(ingredientList)
+    //console.log(ingredientList)
     //const materialOriginList = await getMaterialOriginList(gtin, lot);
     //const componentDetailsList = await getComponentDetailsList(gtin, lot);
     //const additiveList = await getAdditiveList(gtin, lot);

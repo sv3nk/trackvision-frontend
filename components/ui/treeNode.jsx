@@ -2,7 +2,6 @@
 
 import { Handle } from '@xyflow/react';
 import Image from 'next/image'
-import Link from 'next/link'
 
 export function TreeNode(data) {
 

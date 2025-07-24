@@ -20,10 +20,15 @@ import {
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TreeNode } from './ui/treeNode';
+import TreeEdge from './ui/treeEdge';
 
 const nodeTypes = {
     treeNode: TreeNode,
 };
+
+const edgeTypes = {
+    treeEdge: TreeEdge,
+}
 
 
 const elk = new ELK();
@@ -110,6 +115,7 @@ function LayoutFlow({ initialNodes, initialEdges }) {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             nodesDraggable={false}
             minZoom={0.1}
             style={style}
@@ -170,7 +176,10 @@ export function Tree({ data }) {
             id: 'e' + data[dataset].id + 'TO' + data[dataset].parent,
             source: data[dataset].parent,
             target: data[dataset].id,
-            type: 'smoothstep'
+            data: {
+                label: parseFloat(data[dataset].share).toFixed(2),
+            },
+            type: 'treeEdge'
         }
 
         if (edge.source != edge.target) {
