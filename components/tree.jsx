@@ -150,6 +150,9 @@ export function Tree({ data }) {
 
     for (let dataset in data) {
 
+        const share = parseFloat(data[dataset].share)
+        const shareRounded = Math.round(share * 10) / 10
+
         let node = {
             id: data[dataset].id,
             position: initPosition,
@@ -160,7 +163,7 @@ export function Tree({ data }) {
                 detailedName: data[dataset].lotOverview?.detailedName?.value || '-',
                 productName: data[dataset].lotOverview?.product_name?.value || '-',
                 primaryImage: data[dataset].primaryImage,
-                share: data[dataset].share,
+                share: shareRounded,
                 gtin: data[dataset].lotOverview.gtin.value,
                 lot: data[dataset].lotOverview.lot.value,
                 quantity: data[dataset].lotOverview?.lotQuantity?.value || '-',
@@ -177,7 +180,7 @@ export function Tree({ data }) {
             source: data[dataset].parent,
             target: data[dataset].id,
             data: {
-                label: parseFloat(data[dataset].share).toFixed(2),
+                label: shareRounded,
             },
             type: 'treeEdge'
         }
