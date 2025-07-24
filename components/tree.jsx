@@ -151,13 +151,13 @@ export function Tree({ data }) {
             sourcePosition: 'right',
             targetPosition: 'left',
             data: {
-                detailedName: data[dataset].lotOverview.detailedName.value,
-                productName: data[dataset].lotOverview.product_name.value,
+                detailedName: data[dataset].lotOverview?.detailedName?.value || '-',
+                productName: data[dataset].lotOverview?.product_name?.value || '-',
                 primaryImage: data[dataset].primaryImage,
                 share: data[dataset].share,
                 gtin: data[dataset].lotOverview.gtin.value,
                 lot: data[dataset].lotOverview.lot.value,
-                quantity: data[dataset].lotOverview.lotQuantity.value,
+                quantity: data[dataset].lotOverview?.lotQuantity?.value || '-',
                 quantityUom: data[dataset].lotOverview.lotQuantity.uom_desc,
                 productionStep: data[dataset].productionDetails.productionStep.value,
                 eventTime: data[dataset].productionDetails.eventTime.value
