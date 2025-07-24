@@ -20,6 +20,7 @@ import { camelCaseToTitleCase } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tree } from "@/components/tree";
 import { notFound } from "next/navigation";
+import { ChartPieLabelList } from "@/components/ui/chart-pie-label-list";
 
 
 export default async function Page({ params }) {
@@ -89,7 +90,7 @@ export default async function Page({ params }) {
                         <TabsTrigger className="px-4" value="documents">Documents</TabsTrigger>
                     </TabsList>
                 </div>
-                <TabsContent value="data" className="flex flex-col gap-4">
+                <TabsContent value="data" className="flex flex-col gap-2">
                     <div className="flex justify-center rounded-xl p-2 lg:p-6 shadow-sm">
                         <Carousel className="w-full max-w-xs rounded-xl">
                             <CarouselContent>
@@ -128,22 +129,10 @@ export default async function Page({ params }) {
                             <CarouselNext className=" hidden md:inline-flex" />
                         </Carousel>
                     </div>
-                    {/* {boxesArray.length ? (
-                        boxesArray.map(box => (
-                            <div key={box.boxName} className="rounded-xl shadow-sm p-4 pt-2">
-                                <div className="pb-2 font-medium">
-                                    {box.boxName}
-                                </div>
-                                <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
-                            </div>
-                        ))
-                    ) : (
-                        <div>no data</div>
-                    )} */}
                     <Accordion type="multiple" collapsible="true" defaultValue={boxesNameArray}>
                         {boxesArray.length ? (
                             boxesArray.map(box => (
-                                <AccordionItem key={box.boxName} value={box.boxName} className="rounded-xl shadow-sm px-4 mb-4">
+                                <AccordionItem key={box.boxName} value={box.boxName} className="rounded-xl shadow-sm border-none px-4 mt-4">
                                     <AccordionTrigger className='font-medium text-base pt-2 pb-2'>{box.boxName}</AccordionTrigger>
                                     <AccordionContent>
                                         <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
@@ -159,6 +148,12 @@ export default async function Page({ params }) {
                             </AccordionItem>
                         )}
                     </Accordion>
+                    <div className="rounded-xl shadow-sm">
+                        <div className="font-medium text-base pt-2 pb-2">
+                            Ingredients
+                        </div>
+                        Ingredients
+                    </div>
                 </TabsContent>
                 <TabsContent value="tree" className="">
                     <Tree data={calculationData} />

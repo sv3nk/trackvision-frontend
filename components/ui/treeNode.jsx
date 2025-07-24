@@ -13,6 +13,8 @@ export function TreeNode(data) {
         imageSrc = 'https://rcycledemo.trackvision.ai/assets/' + data.data.primaryImage;
     }
 
+    const share = parseFloat(data.data.share).toFixed(2);
+
     const refLink = '/gtin/' + data.data.gtin + '/lot/' + data.data.lot;
 
     return (
@@ -51,7 +53,7 @@ export function TreeNode(data) {
                         <div className='pb-1 border-b'><a href={refLink} target="_blank" rel="noopener noreferrer" className='text-blue-500 hover:text-blue-300'>{data.data.gtin}/{data.data.lot}</a></div>
                         <div className='pb-1 border-b'>{data.data.productionStep}</div>
                         <div className='pb-1 border-b'>{data.data.quantity} {data.data.quantityUom}</div>
-                        <div className='pb-1 border-b'>{data.data.share}</div>
+                        <div className='pb-1 border-b'>{share}%</div>
                         <div>{data.data.eventTime}</div>
                     </div>
                 </div>
