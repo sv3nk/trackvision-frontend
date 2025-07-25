@@ -49,10 +49,40 @@ const renderActiveShape = ({
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
 
+    // The following is used to create the text inside the pie chart
+    // Just some string operations that work with the current state of the strings
+    // It could break in case we decide to change the string layout in the future
+
+    const ingredientText = payload.ingredient;
+    let subTextArray = ingredientText.split(" ");
+    let dy = 0;
+    let dyOffset = 0;
+    console.log(subTextArray)
+
+    if (subTextArray.length == 2) {
+        dy = -8
+        dyOffset = 12
+    } else if (subTextArray.length > 2) {
+        dy = -22
+        dyOffset = 26
+        if(subTextArray.length > 3) {
+            subTextArray[2] = subTextArray[2] + ' ' + subTextArray[3]
+        }
+    }
+
     return (
         <g>
-            <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill} className="font-medium">
-                {payload.value}
+            <text x={cx} y={cy} dy={dy} textAnchor="middle" fill={fill} className="font-medium whitespace-break-spaces">
+                {subTextArray[0]}
+            </text>
+            <text x={cx} y={cy} dy={dy+14} textAnchor="middle" fill={fill} className="font-medium whitespace-break-spaces">
+                {subTextArray[1]}
+            </text>
+            <text x={cx} y={cy} dy={6} textAnchor="middle" fill={fill} className="font-medium whitespace-break-spaces">
+                {subTextArray[2]}
+            </text>
+            <text x={cx} y={cy} dy={dy+dyOffset+18} textAnchor="middle" fill={fill} className="font-medium">
+                {payload.percentage}%
             </text>
             <Sector
                 cx={cx}
@@ -77,13 +107,13 @@ const renderActiveShape = ({
                 cy={cy}
                 startAngle={startAngle}
                 endAngle={endAngle}
-                innerRadius={(outerRadius || 0) }
+                innerRadius={(outerRadius || 0) - 1}
                 outerRadius={(outerRadius || 0) + 10}
                 fill={fill}
             />
             <path className="hidden md:block" d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
             <circle className="hidden md:block" cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-            <text className="font-medium hidden md:block" x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${payload.ingredient} ${value}%`}</text>
+            <text className="font-medium hidden md:block" x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${payload.ingredient} ${value}%`}</text>
         </g>
     );
 };
@@ -131,7 +161,7 @@ export function ChartPieCustomShape({ data }) {
                 >
                     <PieChart>
                         <ChartTooltip
-                            content={<ChartTooltipContent className='md:hidden' hideLabel />}
+                            content={<ChartTooltipContent className='hidden' hideLabel />}
                         />
                         <Pie data={data}
                             dataKey="percentage"

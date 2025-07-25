@@ -151,7 +151,7 @@ export default async function Page({ params }) {
                     </Accordion>
                     <Accordion type="single" collapsible="true">
                         <AccordionItem value={'pieChart'} className="rounded-xl shadow-sm border-none px-4 mt-4">
-                            <AccordionTrigger className='font-medium text-base pt-2 pb-2'>IngredientList</AccordionTrigger>
+                            <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredient List</AccordionTrigger>
                             <AccordionContent>
                                 <ChartPieCustomShape data={ingredientList} />
                             </AccordionContent>
