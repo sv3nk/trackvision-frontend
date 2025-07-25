@@ -21,7 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tree } from "@/components/tree";
 import { notFound } from "next/navigation";
 import { ChartPieLabelList } from "@/components/ui/chart-pie-label-list";
-import ChartPieActiveShape from "@/components/ui/chart-pie-activeShape";
+import { ChartPieCustomShape } from "@/components/ui/chart-pie-custom-shape";
 
 
 export default async function Page({ params }) {
@@ -149,7 +149,7 @@ export default async function Page({ params }) {
                             </AccordionItem>
                         )}
                     </Accordion>
-                    <ChartPieActiveShape />
+                    <ChartPieCustomShape data={ingredientList} />
                 </TabsContent>
                 <TabsContent value="tree" className="">
                     <Tree data={calculationData} />

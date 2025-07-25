@@ -51,11 +51,11 @@ export function ChartPieLabelList({ data }) {
     }
 
     return (
-        <Card className="flex flex-row border-none shadow-none gap-2 bg-amber-200">
-            <div className="bg-blue-200">
-                Test
+        <Card className="flex flex-row border-none shadow-none gap-2">
+            <div className="">
+                Legend if possible
             </div>
-            <CardContent className="flex-1 bg-red-200">
+            <CardContent className="flex-1">
                 <ChartContainer
                     config={customChartConfig}
                     className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[300px]"
@@ -64,10 +64,12 @@ export function ChartPieLabelList({ data }) {
                         <ChartTooltip
                             content={<ChartTooltipContent hideLabel />}
                         />
-                        <Pie data={data} dataKey="percentage" nameKey="ingredient" stroke='0' paddingAngle={1} minAngle={1}>
+                        <Pie data={data} dataKey="percentage" nameKey="ingredient" innerRadius={60} minAngle={1} activeShape={{
+                            fill: 'red',
+                        }}>
                             <LabelList
                                 dataKey="code"
-                                className="fill-background"
+                                className="fill-background font-medium"
                                 stroke="none"
                                 fontSize={12}
                                 formatter={(value) => {
@@ -82,7 +84,6 @@ export function ChartPieLabelList({ data }) {
                         </Pie>
                     </PieChart>
                 </ChartContainer>
-
             </CardContent>
         </Card>
     )
