@@ -72,6 +72,15 @@ const renderActiveShape = ({
                 outerRadius={(outerRadius || 0) + 10}
                 fill={fill}
             />
+            <Sector className="md:hidden"
+                cx={cx}
+                cy={cy}
+                startAngle={startAngle}
+                endAngle={endAngle}
+                innerRadius={(outerRadius || 0) }
+                outerRadius={(outerRadius || 0) + 10}
+                fill={fill}
+            />
             <path className="hidden md:block" d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
             <circle className="hidden md:block" cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
             <text className="font-medium hidden md:block" x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${payload.ingredient} ${value}%`}</text>
@@ -115,7 +124,7 @@ export function ChartPieCustomShape({ data }) {
 
     return (
         <Card className="border-none shadow-none">
-            <CardContent className="flex-1">
+            <CardContent className="flex-1 p-0">
                 <ChartContainer
                     config={customChartConfig}
                     className="[&_.recharts-text]:fill-background min-h-[400px] max-h-[400px] w-full"
