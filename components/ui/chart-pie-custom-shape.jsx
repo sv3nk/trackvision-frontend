@@ -157,9 +157,9 @@ export function ChartPieCustomShape({ data }) {
             <CardContent className="flex-1 p-0">
                 <ChartContainer
                     config={customChartConfig}
-                    className="[&_.recharts-text]:fill-background min-h-[400px] max-h-[400px] w-full"
+                    className="[&_.recharts-text]:fill-background min-h-[300px] max-h-[300px] md:min-h-[350px] md:max-h-[350px] w-full"
                 >
-                    <PieChart>
+                    <PieChart className="min-h-[300px] md:min-h-[350px]">
                         <ChartTooltip
                             content={<ChartTooltipContent className='hidden' hideLabel />}
                         />
