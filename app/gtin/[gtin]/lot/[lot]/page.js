@@ -15,7 +15,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
-import { GeneralInformationTableColumns, AdditiveListColumns } from "@/components/ui/data-table-simple/columns";
+import { GeneralInformationTableColumns, AdditiveListColumns, MaterialOriginListColumns } from "@/components/ui/data-table-simple/columns";
 import { camelCaseToTitleCase } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tree } from "@/components/tree";
@@ -86,8 +86,9 @@ export default async function Page({ params }) {
 
     const materialOriginList = await getMaterialOriginList(gtin, lot);
 
-    console.log(materialOriginList)
-    //const componentDetailsList = await getComponentDetailsList(gtin, lot);
+    const componentDetailsList = await getComponentDetailsList(gtin, lot);
+
+    console.log(componentDetailsList)
     //const recyclabilityList = await getRecyclabilityList(gtin, lot);
     //const recommendedUseList = await getRecommendedUseList(gtin, lot);
 
@@ -218,6 +219,16 @@ export default async function Page({ params }) {
                                             <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Additive List</AccordionTrigger>
                                             <AccordionContent className=''>
                                                 <DataTableSimple columns={AdditiveListColumns} data={additiveList} />
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
+                                ) : (null)}
+                                {materialOriginList.length ? (
+                                    <Accordion type="single" collapsible="true">
+                                        <AccordionItem value={'materialOrigin'} className="rounded-xl shadow-sm border px-2 md:px-4 mt-4">
+                                            <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Material Origin List</AccordionTrigger>
+                                            <AccordionContent className=''>
+                                                <DataTableSimple columns={MaterialOriginListColumns} data={materialOriginList} />
                                             </AccordionContent>
                                         </AccordionItem>
                                     </Accordion>

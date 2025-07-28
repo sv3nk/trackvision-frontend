@@ -98,3 +98,32 @@ export const AdditiveListColumns = [
         },
     }
 ]
+
+export const MaterialOriginListColumns = [
+    {
+        accessorKey: 'material_orign',
+        header: 'Material Origin',
+        cell: ({ row }) => {
+            let material_origin = row.getValue('material_orign');
+
+            return (
+                <div className="flex w-48 md:w-auto overflow-hidden">
+                    {material_origin}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'percentage',
+        header: 'Percentage',
+        cell: ({ row }) => {
+            let value = row.getValue('percentage');
+
+            return (
+                <div className="flex">
+                    {value}%
+                </div>
+            )
+        },
+    }
+]
