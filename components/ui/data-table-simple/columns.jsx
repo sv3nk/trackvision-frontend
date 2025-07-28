@@ -1,7 +1,5 @@
 'use client'
 
-import { ColumnDef } from "@tanstack/react-table"
-
 export const GeneralInformationTableColumns = [
     {
         accessorKey: 'property',
@@ -62,7 +60,7 @@ export const GeneralInformationTableColumns = [
 
             //return <div className="text-right font-medium">{value} {uom_desc} {desc}</div>
             return (
-                <div className="flex">
+                <div className="">
                     {value} {uom_desc}{desc}
                 </div>
             )
@@ -91,7 +89,7 @@ export const AdditiveListColumns = [
             let value = row.getValue('containment');
 
             return (
-                <div className="flex">
+                <div className="">
                     {value}
                 </div>
             )
@@ -107,7 +105,7 @@ export const MaterialOriginListColumns = [
             let material_origin = row.getValue('material_orign');
 
             return (
-                <div className="flex w-48 md:w-auto overflow-hidden">
+                <div className="flex w-52 md:w-auto">
                     {material_origin}
                 </div>
             )
@@ -120,8 +118,68 @@ export const MaterialOriginListColumns = [
             let value = row.getValue('percentage');
 
             return (
-                <div className="flex">
+                <div className="">
                     {value}%
+                </div>
+            )
+        },
+    }
+]
+
+export const PackagingComponentColumns = [
+    {
+        accessorKey: 'component_description',
+        header: 'Component ',
+        cell: ({ row }) => {
+            let component_description = row.getValue('component_description');
+
+            return (
+                <div className="">
+                    {component_description}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'weight',
+        header: 'Weight',
+        cell: ({ row }) => {
+            let value = row.getValue('weight');
+            let uom = '';
+
+            if (row.original.weight_uom_description != undefined) {
+                uom = row.original.weight_uom_description;
+            }
+
+            return (
+                <div className="text-right">
+                    {value}{uom}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'separability_description',
+        header: 'Separability',
+        cell: ({ row }) => {
+            let value = row.getValue('separability_description');
+
+            return (
+                <div className="flex">
+                    {value}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'surface_coverage',
+        header: 'Surface Coverage',
+        cell: ({ row }) => {
+            let value = row.getValue('surface_coverage');
+
+            return (
+                <div className="text-right">
+                    {Math.round(value)}%
                 </div>
             )
         },

@@ -15,14 +15,14 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
-import { GeneralInformationTableColumns, AdditiveListColumns, MaterialOriginListColumns } from "@/components/ui/data-table-simple/columns";
+import { GeneralInformationTableColumns, AdditiveListColumns, MaterialOriginListColumns, PackagingComponentColumns } from "@/components/ui/data-table-simple/columns";
 import { camelCaseToTitleCase } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tree } from "@/components/tree";
 import { notFound } from "next/navigation";
-import { ChartPieLabelList } from "@/components/ui/chart-pie-label-list";
 import { ChartPieCustomShape } from "@/components/ui/chart-pie-custom-shape";
 import { LucideSquare } from "lucide-react";
+import { DataTableSimpleHeader } from "@/components/ui/data-table-simple/data-table-simple-header";
 
 
 export default async function Page({ params }) {
@@ -88,7 +88,6 @@ export default async function Page({ params }) {
 
     const componentDetailsList = await getComponentDetailsList(gtin, lot);
 
-    console.log(componentDetailsList)
     //const recyclabilityList = await getRecyclabilityList(gtin, lot);
     //const recommendedUseList = await getRecommendedUseList(gtin, lot);
 
@@ -236,6 +235,16 @@ export default async function Page({ params }) {
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
+                    {componentDetailsList.length ? (
+                        <Accordion type="single" collapsible="true">
+                            <AccordionItem value={'componentDetails'} className="rounded-xl shadow-sm border-none px-2 md:px-4 mt-4">
+                                <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Component Details List</AccordionTrigger>
+                                <AccordionContent className=''>
+                                    <DataTableSimpleHeader columns={PackagingComponentColumns} data={componentDetailsList} />
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    ) : (null)}
                 </TabsContent>
                 <TabsContent value="tree" className="">
                     <Tree data={calculationData} />
