@@ -15,7 +15,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
-import { simpleTableColumns } from "@/components/ui/data-table-simple/columns";
+import { GeneralInformationTableColumns, AdditiveListColumns } from "@/components/ui/data-table-simple/columns";
 import { camelCaseToTitleCase } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tree } from "@/components/tree";
@@ -46,7 +46,7 @@ export default async function Page({ params }) {
     // This is only used for the accordion state, so that all boxes are open by default
     let boxesNameArray = [];
 
-    const ingredientColors = ['#003a7d', '#0064BE', '#008dff', '#ff73b6', '#c701ff', '#4ecb8d', '#ff9d3a', '#f9e858', '#d83034', '#D0199A', '#E33ADB', '#D42567', '#A7B464'];
+    const ingredientColors = ['#003a7d', '#c701ff', '#0064BE', '#008dff', '#ff73b6', '#4ecb8d', '#ff9d3a', '#f9e858', '#d83034', '#D0199A', '#E33ADB', '#D42567', '#A7B464'];
 
     let ingredientList = await getIngredientsList(gtin, lot);
 
@@ -82,10 +82,11 @@ export default async function Page({ params }) {
         ingredientChartConfig[cleanCode] = obj;
     }
 
-    //const additiveList = await getAdditiveList(gtin, lot);
+    const additiveList = await getAdditiveList(gtin, lot);
 
-    //console.log(ingredientList)
-    //const materialOriginList = await getMaterialOriginList(gtin, lot);
+    const materialOriginList = await getMaterialOriginList(gtin, lot);
+
+    console.log(materialOriginList)
     //const componentDetailsList = await getComponentDetailsList(gtin, lot);
     //const recyclabilityList = await getRecyclabilityList(gtin, lot);
     //const recommendedUseList = await getRecommendedUseList(gtin, lot);
@@ -171,10 +172,10 @@ export default async function Page({ params }) {
                     <Accordion type="multiple" collapsible="true" defaultValue={boxesNameArray}>
                         {boxesArray.length ? (
                             boxesArray.map(box => (
-                                <AccordionItem key={box.boxName} value={box.boxName} className="rounded-xl shadow-sm border-none px-4 mt-4">
+                                <AccordionItem key={box.boxName} value={box.boxName} className="rounded-xl shadow-sm border-none px-2 md:px-4 mt-4">
                                     <AccordionTrigger className='font-medium text-base pt-2 pb-2'>{box.boxName}</AccordionTrigger>
                                     <AccordionContent className=''>
-                                        <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
+                                        <DataTableSimple columns={GeneralInformationTableColumns} data={box.rowArray} />
                                     </AccordionContent>
                                 </AccordionItem>
                             ))
@@ -187,28 +188,40 @@ export default async function Page({ params }) {
                             </AccordionItem>
                         )}
                     </Accordion>
-                    <Accordion type="single" collapsible="true">
-                        <AccordionItem value={'ingredients'} className="rounded-xl shadow-sm border-none px-4 mt-4 ">
+                    <Accordion type="multiple" collapsible="true" defaultValue={'ingredients'}>
+                        <AccordionItem value={'ingredients'} className="rounded-xl shadow-sm border-none px-2 md:px-4 mt-2">
                             <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredients</AccordionTrigger>
                             <AccordionContent className=''>
-                                <Accordion type="single" collapsible="true">
-                                    <AccordionItem value={'ingredientList'} className="rounded-xl shadow-sm border px-3 mt-4">
-                                        <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredient List</AccordionTrigger>
-                                        <AccordionContent className=''>
-                                            <div className="flex flex-col">
-                                                <ChartPieCustomShape data={ingredientList} config={ingredientChartConfig} />
-                                                <div className="flex flex-col gap-1">
-                                                    {ingredientList.map(ingredient => (
-                                                        <div key={ingredient.code} className="flex flex-row justify-between rounded-sm px-1 hover:bg-muted/50">
-                                                            <div className="flex flex-row items-center gap-1 overflow-hidden"><LucideSquare className="h-4 w-4" color={ingredient.fill} fill={ingredient.fill}/>{ingredient.ingredient}</div>
-                                                            <div>{ingredient.percentage}%</div>
-                                                        </div>
-                                                    ))}
+                                {ingredientList.length ? (
+                                    <Accordion type="single" collapsible="true">
+                                        <AccordionItem value={'ingredientList'} className="rounded-xl shadow-sm border px-2 md:px-4">
+                                            <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredient List</AccordionTrigger>
+                                            <AccordionContent className=''>
+                                                <div className="flex flex-col">
+                                                    <ChartPieCustomShape data={ingredientList} config={ingredientChartConfig} />
+                                                    <div className="flex flex-col gap-1">
+                                                        {ingredientList.map(ingredient => (
+                                                            <div key={ingredient.code} className="flex flex-row justify-between rounded-sm px-1 hover:bg-muted/50">
+                                                                <div className="flex flex-row items-center gap-1 overflow-hidden"><LucideSquare className="h-4 w-4" color={ingredient.fill} fill={ingredient.fill} />{ingredient.ingredient}</div>
+                                                                <div>{ingredient.percentage}%</div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                </Accordion>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
+                                ) : (null)}
+                                {additiveList.length ? (
+                                    <Accordion type="single" collapsible="true">
+                                        <AccordionItem value={'additiveList'} className="rounded-xl shadow-sm border px-2 md:px-4 mt-4">
+                                            <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Additive List</AccordionTrigger>
+                                            <AccordionContent className=''>
+                                                <DataTableSimple columns={AdditiveListColumns} data={additiveList} />
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
+                                ) : (null)}
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>

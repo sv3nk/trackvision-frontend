@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-export const simpleTableColumns = [
+export const GeneralInformationTableColumns = [
     {
         accessorKey: 'property',
         header: 'Property',
@@ -64,6 +64,35 @@ export const simpleTableColumns = [
             return (
                 <div className="flex">
                     {value} {uom_desc}{desc}
+                </div>
+            )
+        },
+    }
+]
+
+export const AdditiveListColumns = [
+    {
+        accessorKey: 'description',
+        header: 'Description',
+        cell: ({ row }) => {
+            let description = row.getValue('description');
+
+            return (
+                <div className="flex w-44 md:w-auto">
+                    {description}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'containment',
+        header: 'Containment',
+        cell: ({ row }) => {
+            let value = row.getValue('containment');
+
+            return (
+                <div className="flex">
+                    {value}
                 </div>
             )
         },

@@ -9,7 +9,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
-import { simpleTableColumns } from "@/components/ui/data-table-simple/columns";
+import { GeneralInformationTableColumns } from "@/components/ui/data-table-simple/columns";
 import { camelCaseToTitleCase } from "@/lib/utils";
 
 
@@ -102,7 +102,7 @@ export default async function Page({ params }) {
                         <div className="pb-2 font-medium">
                             {box.boxName}
                         </div>
-                        <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
+                        <DataTableSimple columns={GeneralInformationTableColumns} data={box.rowArray} />
                     </div>
                 ))
             ) : (
