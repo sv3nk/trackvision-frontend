@@ -57,7 +57,6 @@ const renderActiveShape = ({
     let subTextArray = ingredientText.split(" ");
     let dy = 0;
     let dyOffset = 0;
-    console.log(subTextArray)
 
     if (subTextArray.length == 2) {
         dy = -8
@@ -118,48 +117,20 @@ const renderActiveShape = ({
     );
 };
 
-const colors = ['#003a7d', '#008dff', '#ff73b6', '#c701ff', '#4ecb8d', '#ff9d3a', '#f9e858', '#d83034']
+const colors = ['#003a7d', '#0064BE', '#008dff', '#ff73b6', '#c701ff', '#4ecb8d', '#ff9d3a', '#f9e858', '#d83034', '#D0199A', '#E33ADB', '#D42567', '#A7B464']
 
-export function ChartPieCustomShape({ data }) {
+export function ChartPieCustomShape({ data, config }) {
 
-    let customChartConfig = {
-        percentage: {
-            label: "Percentage",
-        },
-    }
-
-    for (let set in data) {
-
-        // Code values in our data contain - which is not acceptable as object properties
-        const code = data[set].code
-        const cleanCode = code.replace('-', '')
-        data[set].code = cleanCode
-
-        const percentageFloat = parseFloat(data[set].percentage)
-        data[set].percentage = percentageFloat;
-        if (set < colors.length) {
-            data[set].fill = colors[set]
-        } else {
-            data[set].fill = '#ffffff'
-        }
-
-        let obj = {
-            label: data[set].ingredient,
-            percentage: data[set].percentage,
-            color: "var(--chart-3)",
-        }
-
-        customChartConfig[cleanCode] = obj;
-    }
+    let customChartConfig = config;
 
     return (
         <Card className="border-none shadow-none">
             <CardContent className="flex-1 p-0">
                 <ChartContainer
                     config={customChartConfig}
-                    className="[&_.recharts-text]:fill-background min-h-[300px] max-h-[300px] md:min-h-[350px] md:max-h-[350px] w-full"
+                    className="[&_.recharts-text]:fill-background min-h-[260px] max-h-[260px] md:min-h-[330px] md:max-h-[330px] w-full"
                 >
-                    <PieChart className="min-h-[300px] md:min-h-[350px]">
+                    <PieChart className="min-h-[260px] md:min-h-[330px] p-0">
                         <ChartTooltip
                             content={<ChartTooltipContent className='hidden' hideLabel />}
                         />

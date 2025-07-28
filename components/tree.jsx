@@ -153,6 +153,13 @@ export function Tree({ data }) {
         const share = parseFloat(data[dataset].share) * 100
         const shareRounded = Math.round(share*10)/10
         //const shareRounded = Math.round(share * 100)
+        let type = ''
+
+        if('productType' in data[dataset]) {
+            type = data[dataset].basicProperties.productType.value
+        } else if('packagingType' in data[dataset]) {
+            type = data[dataset].basicProperties.packagingType.value
+        }
 
         let node = {
             id: data[dataset].id,
@@ -170,7 +177,8 @@ export function Tree({ data }) {
                 quantity: data[dataset].lotOverview?.lotQuantity?.value || '-',
                 quantityUom: data[dataset].lotOverview.lotQuantity.uom_desc,
                 productionStep: data[dataset].productionDetails.productionStep.value,
-                eventTime: data[dataset].productionDetails.eventTime.value
+                eventTime: data[dataset].productionDetails.eventTime.value,
+                type: data[dataset].basicProperties?.productType?.value
             }
         }
 

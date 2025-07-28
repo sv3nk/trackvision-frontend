@@ -22,6 +22,7 @@ import { Tree } from "@/components/tree";
 import { notFound } from "next/navigation";
 import { ChartPieLabelList } from "@/components/ui/chart-pie-label-list";
 import { ChartPieCustomShape } from "@/components/ui/chart-pie-custom-shape";
+import { LucideSquare } from "lucide-react";
 
 
 export default async function Page({ params }) {
@@ -31,6 +32,7 @@ export default async function Page({ params }) {
     const mainElement = calculationData[calculationData.length - 1];
     let primaryImage = '/placeholder.png'
 
+    // Display not found page if no data is present
     if (calculationData.length == 0) {
         notFound()
     }
@@ -44,11 +46,47 @@ export default async function Page({ params }) {
     // This is only used for the accordion state, so that all boxes are open by default
     let boxesNameArray = [];
 
-    const ingredientList = await getIngredientsList(gtin, lot);
+    const ingredientColors = ['#003a7d', '#0064BE', '#008dff', '#ff73b6', '#c701ff', '#4ecb8d', '#ff9d3a', '#f9e858', '#d83034', '#D0199A', '#E33ADB', '#D42567', '#A7B464'];
+
+    let ingredientList = await getIngredientsList(gtin, lot);
+
+    // Config needed for the pie chart of ingredients
+    let ingredientChartConfig = {
+        percentage: {
+            label: "Percentage",
+        },
+    }
+
+    // Restructure ingredient list array so that the pie chart can work with the data
+    for (let set in ingredientList) {
+
+        // Code values in our data contain - which is not acceptable as object properties
+        const code = ingredientList[set].code
+        const cleanCode = code.replace('-', '')
+        ingredientList[set].code = cleanCode
+
+        const percentageFloat = parseFloat(ingredientList[set].percentage)
+        ingredientList[set].percentage = percentageFloat;
+        if (set < ingredientColors.length) {
+            ingredientList[set].fill = ingredientColors[set]
+        } else {
+            ingredientList[set].fill = '#ffffff'
+        }
+
+        let obj = {
+            label: ingredientList[set].ingredient,
+            percentage: ingredientList[set].percentage,
+            color: "var(--chart-3)",
+        }
+
+        ingredientChartConfig[cleanCode] = obj;
+    }
+
+    //const additiveList = await getAdditiveList(gtin, lot);
+
     //console.log(ingredientList)
     //const materialOriginList = await getMaterialOriginList(gtin, lot);
     //const componentDetailsList = await getComponentDetailsList(gtin, lot);
-    //const additiveList = await getAdditiveList(gtin, lot);
     //const recyclabilityList = await getRecyclabilityList(gtin, lot);
     //const recommendedUseList = await getRecommendedUseList(gtin, lot);
 
@@ -135,7 +173,7 @@ export default async function Page({ params }) {
                             boxesArray.map(box => (
                                 <AccordionItem key={box.boxName} value={box.boxName} className="rounded-xl shadow-sm border-none px-4 mt-4">
                                     <AccordionTrigger className='font-medium text-base pt-2 pb-2'>{box.boxName}</AccordionTrigger>
-                                    <AccordionContent>
+                                    <AccordionContent className=''>
                                         <DataTableSimple columns={simpleTableColumns} data={box.rowArray} />
                                     </AccordionContent>
                                 </AccordionItem>
@@ -150,10 +188,27 @@ export default async function Page({ params }) {
                         )}
                     </Accordion>
                     <Accordion type="single" collapsible="true">
-                        <AccordionItem value={'pieChart'} className="rounded-xl shadow-sm border-none px-4 mt-4">
-                            <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredient List</AccordionTrigger>
-                            <AccordionContent>
-                                <ChartPieCustomShape data={ingredientList} />
+                        <AccordionItem value={'ingredients'} className="rounded-xl shadow-sm border-none px-4 mt-4 ">
+                            <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredients</AccordionTrigger>
+                            <AccordionContent className=''>
+                                <Accordion type="single" collapsible="true">
+                                    <AccordionItem value={'ingredientList'} className="rounded-xl shadow-sm border px-3 mt-4">
+                                        <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredient List</AccordionTrigger>
+                                        <AccordionContent className=''>
+                                            <div className="flex flex-col">
+                                                <ChartPieCustomShape data={ingredientList} config={ingredientChartConfig} />
+                                                <div className="flex flex-col gap-1">
+                                                    {ingredientList.map(ingredient => (
+                                                        <div key={ingredient.code} className="flex flex-row justify-between rounded-sm px-1 hover:bg-muted/50">
+                                                            <div className="flex flex-row items-center gap-1 overflow-hidden"><LucideSquare className="h-4 w-4" color={ingredient.fill} fill={ingredient.fill}/>{ingredient.ingredient}</div>
+                                                            <div>{ingredient.percentage}%</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </Accordion>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
