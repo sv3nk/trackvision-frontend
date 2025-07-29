@@ -129,7 +129,7 @@ export const MaterialOriginListColumns = [
 export const PackagingComponentColumns = [
     {
         accessorKey: 'component_description',
-        header: 'Component ',
+        header: 'Component',
         cell: ({ row }) => {
             let component_description = row.getValue('component_description');
 
@@ -145,6 +145,7 @@ export const PackagingComponentColumns = [
         header: 'Weight',
         cell: ({ row }) => {
             let value = row.getValue('weight');
+            let roundedValue = Math.round(value*10)/10;
             let uom = '';
 
             if (row.original.weight_uom_description != undefined) {
@@ -152,8 +153,8 @@ export const PackagingComponentColumns = [
             }
 
             return (
-                <div className="text-right">
-                    {value}{uom}
+                <div className="">
+                    {roundedValue} {uom}
                 </div>
             )
         },
@@ -178,10 +179,83 @@ export const PackagingComponentColumns = [
             let value = row.getValue('surface_coverage');
 
             return (
-                <div className="text-right">
+                <div className="">
                     {Math.round(value)}%
                 </div>
             )
         },
     }
+]
+
+export const RecyclabilityListColumns = [
+    {
+        accessorKey: 'Area of Application',
+        header: 'Area of Application ',
+        cell: ({ row }) => {
+            let area_of_application = row.getValue('Area of Application');
+
+            return (
+                <div className="">
+                    {area_of_application}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'Rating',
+        header: 'Rating',
+        cell: ({ row }) => {
+            let value = row.getValue('Rating');
+
+            return (
+                <div className="flex">
+                    {value}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'Standard',
+        header: 'Standard',
+        cell: ({ row }) => {
+            let value = row.getValue('Standard');
+
+            return (
+                <div className="">
+                    {value}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'Value',
+        header: 'Value',
+        cell: ({ row }) => {
+            let value = row.getValue('Value');
+            let uom = '';
+
+            if (row.original.value_uom != undefined) {
+                uom = row.original.value_uom;
+            }
+
+            return (
+                <div className="">
+                    {value}{uom}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'Certificate No',
+        header: 'Certificate No',
+        cell: ({ row }) => {
+            let value = row.getValue('Certificate No');
+
+            return (
+                <div className="">
+                    {value}
+                </div>
+            )
+        },
+    },
 ]

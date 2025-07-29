@@ -5,6 +5,8 @@ import Image from 'next/image'
 
 export function TreeNode(data) {
 
+    console.log(data)
+
     let imageSrc = data.data.primaryImage;
     if (imageSrc == null) {
         imageSrc = '/placeholder.png'
@@ -13,6 +15,19 @@ export function TreeNode(data) {
     }
 
     const refLink = '/gtin/' + data.data.gtin + '/lot/' + data.data.lot;
+
+    let dateElement = new Date(data.data.eventTime);
+
+    let day = dateElement.getDate();
+    day = day < 10 ? "0" + day : day;
+    let month = dateElement.getMonth() + 1;
+    month = month < 10 ? "0" + month : month;
+    const year = dateElement.getFullYear();
+    const hour = dateElement.getHours();
+    const minutes = dateElement.getMinutes();
+    const seconds = dateElement.getSeconds();
+
+    const resultDate = day + '.' + month + '.' + year + ' - ' + hour + ':' + minutes + ':' + seconds;
 
     return (
         <div className="flex flex-col grow rounded-md w-[320px] h-[230px] p-1">
@@ -42,7 +57,6 @@ export function TreeNode(data) {
                         <div className='pb-1 border-b'>GTIN/Lot</div>
                         <div className='pb-1 border-b'>Production Step</div>
                         <div className='pb-1 border-b'>Quantity</div>
-                        <div className='pb-1 border-b'>Share</div>
                         <div>Date</div>
                     </div>
                     <div className='flex flex-col col-span-2 gap-1 text-nowrap overflow-hidden'>
@@ -50,8 +64,7 @@ export function TreeNode(data) {
                         <div className='pb-1 border-b'><a href={refLink} target="_blank" rel="noopener noreferrer" className='text-blue-500 hover:text-blue-300'>{data.data.gtin}/{data.data.lot}</a></div>
                         <div className='pb-1 border-b'>{data.data.productionStep}</div>
                         <div className='pb-1 border-b'>{data.data.quantity} {data.data.quantityUom}</div>
-                        <div className='pb-1 border-b'>{data.data.share}%</div>
-                        <div>{data.data.eventTime}</div>
+                        <div>{resultDate}</div>
                     </div>
                 </div>
             </div>

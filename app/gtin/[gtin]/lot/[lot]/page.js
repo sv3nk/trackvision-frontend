@@ -15,7 +15,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import Image from 'next/image'
 import { DataTableSimple } from "@/components/ui/data-table-simple/data-table-simple";
-import { GeneralInformationTableColumns, AdditiveListColumns, MaterialOriginListColumns, PackagingComponentColumns } from "@/components/ui/data-table-simple/columns";
+import { GeneralInformationTableColumns, AdditiveListColumns, MaterialOriginListColumns, PackagingComponentColumns, RecyclabilityListColumns } from "@/components/ui/data-table-simple/columns";
 import { camelCaseToTitleCase } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tree } from "@/components/tree";
@@ -88,8 +88,11 @@ export default async function Page({ params }) {
 
     const componentDetailsList = await getComponentDetailsList(gtin, lot);
 
-    //const recyclabilityList = await getRecyclabilityList(gtin, lot);
-    //const recommendedUseList = await getRecommendedUseList(gtin, lot);
+    const recyclabilityList = await getRecyclabilityList(gtin, lot);
+
+    const recommendedUseList = await getRecommendedUseList(gtin, lot);
+
+    console.log(recommendedUseList)
 
     // Create array of data to be shown by in tables.
     // Necessary, because data is provided in JSON objects but tables require an array
@@ -241,6 +244,16 @@ export default async function Page({ params }) {
                                 <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Component Details List</AccordionTrigger>
                                 <AccordionContent className=''>
                                     <DataTableSimpleHeader columns={PackagingComponentColumns} data={componentDetailsList} />
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    ) : (null)}
+                    {recyclabilityList.length ? (
+                        <Accordion type="single" collapsible="true">
+                            <AccordionItem value={'recyclabilityList'} className="rounded-xl shadow-sm border-none px-2 md:px-4 mt-4">
+                                <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Recyclability List</AccordionTrigger>
+                                <AccordionContent className=''>
+                                    <DataTableSimpleHeader columns={RecyclabilityListColumns} data={recyclabilityList} />
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
