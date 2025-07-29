@@ -5,8 +5,6 @@ import Image from 'next/image'
 
 export function TreeNode(data) {
 
-    console.log(data)
-
     let imageSrc = data.data.primaryImage;
     if (imageSrc == null) {
         imageSrc = '/placeholder.png'
@@ -23,9 +21,12 @@ export function TreeNode(data) {
     let month = dateElement.getMonth() + 1;
     month = month < 10 ? "0" + month : month;
     const year = dateElement.getFullYear();
-    const hour = dateElement.getHours();
-    const minutes = dateElement.getMinutes();
-    const seconds = dateElement.getSeconds();
+    let hour = dateElement.getHours();
+    hour = hour < 10 ? "0" + hour : hour;
+    let minutes = dateElement.getMinutes();
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    let seconds = dateElement.getSeconds();
+    seconds = seconds < 10 ? "0" + seconds : seconds;
 
     const resultDate = day + '.' + month + '.' + year + ' - ' + hour + ':' + minutes + ':' + seconds;
 
