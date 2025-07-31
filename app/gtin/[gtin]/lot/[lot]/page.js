@@ -97,7 +97,7 @@ export default async function Page({ params }) {
     // Create array of data to be shown by in tables.
     // Necessary, because data is provided in JSON objects but tables require an array
     for (let key in mainElement) {
-        if (key != 'id' && key != 'primaryImage' && key != 'share' && key != 'parent') {
+        if (key != 'id' && key != 'primaryImage' && key != 'share' && key != 'parent' && key != 'type') {
             let rowArray = []
             for (let keyx in mainElement[key]) {
                 rowArray.push({

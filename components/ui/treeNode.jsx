@@ -5,6 +5,8 @@ import Image from 'next/image'
 
 export function TreeNode(data) {
 
+    console.log(data)
+
     let imageSrc = data.data.primaryImage;
     if (imageSrc == null) {
         imageSrc = '/placeholder.png'
@@ -31,7 +33,7 @@ export function TreeNode(data) {
     const resultDate = day + '.' + month + '.' + year + ' - ' + hour + ':' + minutes + ':' + seconds;
 
     return (
-        <div className="flex flex-col grow rounded-md w-[320px] h-[230px] p-1">
+        <div className="flex flex-col grow rounded-md w-[320px] h-[255px] p-1">
             <Handle type="target" position={data.targetPosition} />
             <Handle type="source" position={data.sourcePosition} />
             <div className='flex flex-row shadow-sm rounded-sm bg-white'>
@@ -48,23 +50,27 @@ export function TreeNode(data) {
                     />
                 </div>
                 <div className='flex items-center text-xs p-2'>
-                    {data.data.productName}
+                    {data.data.type}
                 </div>
             </div>
             <div className='bg-white p-1 mt-1 rounded-sm shadow-sm'>
                 <div className='grid grid-cols-3 border rounded-sm bg-white text-xs py-2 px-2 overflow-hidden'>
                     <div className='flex flex-col col-span-1 gap-1'>
+                        <div className='pb-1 border-b'>Product</div>
                         <div className='pb-1 border-b'>Name</div>
-                        <div className='pb-1 border-b'>GTIN/Lot</div>
-                        <div className='pb-1 border-b'>Production Step</div>
+                        <div className='pb-1 border-b'>ID</div>
                         <div className='pb-1 border-b'>Quantity</div>
+                        <div className='pb-1 border-b'>GLN</div>
+                        <div className='pb-1 border-b'>GLN Name</div>
                         <div>Date</div>
                     </div>
                     <div className='flex flex-col col-span-2 gap-1 text-nowrap overflow-hidden'>
+                        <div className='pb-1 border-b'>{data.data.productName}</div>
                         <div className='pb-1 border-b'>{data.data.detailedName}</div>
-                        <div className='pb-1 border-b'><a href={refLink} target="_blank" rel="noopener noreferrer" className='text-blue-500 hover:text-blue-300'>{data.data.gtin}/{data.data.lot}</a></div>
-                        <div className='pb-1 border-b'>{data.data.productionStep}</div>
-                        <div className='pb-1 border-b'>{data.data.quantity} {data.data.quantityUom}</div>
+                        <div className='pb-1 border-b'><a href={refLink} target="_blank" rel="noopener noreferrer" className='text-blue-500 hover:text-blue-300'>01/{data.data.gtin}/10/{data.data.lot}</a></div>
+                        <div className='pb-1 border-b'>{Math.round(data.data.quantity)} {data.data.quantityUom}</div>
+                        <div className='pb-1 border-b'>{data.data.gln}</div>
+                        <div className='pb-1 border-b'>{data.data.glnName}</div>
                         <div>{resultDate}</div>
                     </div>
                 </div>

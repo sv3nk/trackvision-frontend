@@ -57,7 +57,7 @@ const getLayoutedElements = (nodes, edges, options = {}) => {
 
             // Hardcode a width and height for elk to use when layouting.
             width: 320,
-            height: 230,
+            height: 255,
         })),
         edges: edges,
     };
@@ -153,12 +153,12 @@ export function Tree({ data }) {
         const share = parseFloat(data[dataset].share) * 100
         const shareRounded = Math.round(share*10)/10
         //const shareRounded = Math.round(share * 100)
-        let type = ''
+        let type = data[dataset].type
 
         if('productType' in data[dataset]) {
-            type = data[dataset].basicProperties.productType.value
+            type = data[dataset].basicProperties?.productType?.value
         } else if('packagingType' in data[dataset]) {
-            type = data[dataset].basicProperties.packagingType.value
+            type = data[dataset].basicProperties?.packagingType?.value
         }
 
         let node = {
@@ -175,10 +175,12 @@ export function Tree({ data }) {
                 gtin: data[dataset].lotOverview.gtin.value,
                 lot: data[dataset].lotOverview.lot.value,
                 quantity: data[dataset].lotOverview?.lotQuantity?.value || '-',
-                quantityUom: data[dataset].lotOverview.lotQuantity.uom_desc,
-                productionStep: data[dataset].productionDetails.productionStep.value,
-                eventTime: data[dataset].productionDetails.eventTime.value,
-                type: data[dataset].basicProperties?.productType?.value
+                quantityUom: data[dataset].lotOverview?.lotQuantity?.uom_desc,
+                productionStep: data[dataset].productionDetails?.productionStep?.value,
+                eventTime: data[dataset].productionDetails?.eventTime?.value,
+                type: type,
+                gln: data[dataset].productionDetails?.bizLocation?.value,
+                glnName: data[dataset].productionDetails?.bizLocationName?.value,
             }
         }
 
