@@ -30,6 +30,10 @@ export const GeneralInformationTableColumns = [
                 value = 'No'
             }
 
+            if(!isNaN(value)) {
+                value = Math.round(parseFloat(value)*10)/10
+            }
+
             // Create date string for human readable date format
             if (row.original.property == 'Production Time') {
                 let dateElement = new Date(value);
