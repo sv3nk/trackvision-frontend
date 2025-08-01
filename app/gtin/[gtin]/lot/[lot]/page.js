@@ -191,7 +191,7 @@ export default async function Page({ params }) {
                             </AccordionItem>
                         )}
                     </Accordion>
-                    <Accordion type="multiple" collapsible="true" defaultValue={'ingredients'}>
+                    <Accordion type="single" collapsible="true" defaultValue={'ingredients'}>
                         <AccordionItem value={'ingredients'} className="rounded-xl shadow-sm border-none px-2 md:px-4 mt-2">
                             <AccordionTrigger className='font-medium text-base pt-2 pb-2'>Ingredients</AccordionTrigger>
                             <AccordionContent className=''>
