@@ -30,8 +30,8 @@ export const GeneralInformationTableColumns = [
                 value = 'No'
             }
 
-            if(!isNaN(value)) {
-                value = Math.round(parseFloat(value)*10)/10
+            if (!isNaN(value)) {
+                value = Math.round(parseFloat(value) * 10) / 10
             }
 
             // Create date string for human readable date format
@@ -74,19 +74,6 @@ export const GeneralInformationTableColumns = [
 
 export const AdditiveListColumns = [
     {
-        accessorKey: 'description',
-        header: 'Description',
-        cell: ({ row }) => {
-            let description = row.getValue('description');
-
-            return (
-                <div className="flex w-44 md:w-auto">
-                    {description}
-                </div>
-            )
-        },
-    },
-    {
         accessorKey: 'containment',
         header: 'Containment',
         cell: ({ row }) => {
@@ -95,6 +82,19 @@ export const AdditiveListColumns = [
             return (
                 <div className="">
                     {value}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: 'description',
+        header: 'Description',
+        cell: ({ row }) => {
+            let description = row.getValue('description');
+
+            return (
+                <div className="flex w-44 md:w-auto">
+                    {description}
                 </div>
             )
         },
@@ -149,7 +149,7 @@ export const PackagingComponentColumns = [
         header: 'Weight',
         cell: ({ row }) => {
             let value = row.getValue('weight');
-            let roundedValue = Math.round(value*10)/10;
+            let roundedValue = Math.round(value * 10) / 10;
             let uom = '';
 
             if (row.original.weight_uom_description != undefined) {
